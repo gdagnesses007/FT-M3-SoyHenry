@@ -51,14 +51,13 @@ function problemA() {
 
     // promise version
     // ???
+
+    //vamos a guardar en el array las promesas ya ejecutadas para que no importe el orden
     Promise.all(
         [
-            promisifiedReadFile('poem-two/stanza-01.txt'),
-            promisifiedReadFile('poem-two/stanza-02.txt')
+            promisifiedReadFile('poem-two/stanza-01.txt').then(stanza => blue(stanza)),
+            promisifiedReadFile('poem-two/stanza-02.txt').then(stanza => blue(stanza))
         ])
-        .then(response => {
-            response.forEach(stanza => blue(stanza))
-        })
         .finally(() => console.log('done'))
 }
 
@@ -92,8 +91,9 @@ function problemB() {
 
     // promise version
     // ???
-    Promise.all(filenames.map(file => promisifiedReadFile(file)))
-        .then(responses => responses.forEach(resp => blue(resp)))
+
+    // si guardamos las promesas ya ejecutadas entonces ahi si tenemos todo desordenado
+    Promise.all(filenames.map(file => promisifiedReadFile(file).then(stanza => blue(stanza))))
         .finally(() => console.log('done'))
 }
 
@@ -128,50 +128,18 @@ function problemC() {
 
     // promise version
     // ???
-    let index = 0;
-    promisifiedReadFile(filenames[index++])
+    filenames.reduce((promise, file) => {
+        return promise.then(stanza => {
+            if (stanza) {
+                blue(stanza)
+            }
+            return promisifiedReadFile(file)
+        })
+    }, Promise.resolve(false))
         .then(stanza => {
             blue(stanza)
-            return promisifiedReadFile(filenames[index++])
+            console.log('done')
         })
-        .then(stanza => {
-            blue(stanza)
-            return promisifiedReadFile(filenames[index++])
-        })
-        .then(stanza => {
-            blue(stanza)
-            return promisifiedReadFile(filenames[index++])
-        })
-        .then(stanza => {
-            blue(stanza)
-            return promisifiedReadFile(filenames[index++])
-        })
-        .then(stanza => {
-            blue(stanza)
-            return promisifiedReadFile(filenames[index++])
-        })
-        .then(stanza => {
-            blue(stanza)
-            return promisifiedReadFile(filenames[index++])
-        })
-        .then(stanza => {
-            blue(stanza)
-            return promisifiedReadFile(filenames[index++])
-        })
-        .then(stanza => {
-            blue(stanza)
-        })
-        .finally(() => console.log('done'))
-
-
-    /* let promise = promisifiedReadFile(filenames[0])
-    for (let i = 1; i < 8; i++) {
-        promise.then(stanza => {
-            blue(stanza)
-            return promisifiedReadFile(filenames[i])
-        })
-    }
-    promise.finally(() => console.log('done')) */
 }
 
 function problemD() {
@@ -209,41 +177,23 @@ function problemD() {
 
     // promise version
     // ???
-    let index = 0;
-    promisifiedReadFile(filenames[index++])
-        .then(stanza => {
-            blue(stanza)
-            return promisifiedReadFile(filenames[index++])
+    filenames.reduce((promise, file) => {
+        return promise.then(stanza => {
+            if (stanza) {
+                blue(stanza)
+            }
+            return promisifiedReadFile(file)
         })
-        .then(stanza => {
-            blue(stanza)
-            return promisifiedReadFile(filenames[index++])
-        })
-        .then(stanza => {
-            blue(stanza)
-            return promisifiedReadFile(filenames[index++])
-        })
-        .then(stanza => {
-            blue(stanza)
-            return promisifiedReadFile(filenames[index++])
-        })
-        .then(stanza => {
-            blue(stanza)
-            return promisifiedReadFile(filenames[index++])
-        })
-        .then(stanza => {
-            blue(stanza)
-            return promisifiedReadFile(filenames[index++])
-        })
-        .then(stanza => {
-            blue(stanza)
-            return promisifiedReadFile(filenames[index++])
-        })
+    }, Promise.resolve(false))
         .then(stanza => {
             blue(stanza)
         })
-        .catch(error => new Error(error))
-        .finally(() => console.log('done'))
+        .catch(error => {
+            magenta(new Error(error))
+        })
+        .finally(() => {
+            console.log('done')
+        })
 }
 
 function problemE() {
