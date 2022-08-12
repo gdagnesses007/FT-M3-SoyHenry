@@ -156,9 +156,9 @@ function problemD() {
 
     // promise version
     // ???
-    promisifiedReadFile('poem-one/stanza-04.txt')
+    promisifiedReadFile('poem-one/wrong-file-name.txt')
         .then(response => blue(response))
-        .catch(error => new Error(error))
+        .catch(error => magenta(new Error(error)))
 
 }
 
@@ -188,10 +188,10 @@ function problemE() {
     promisifiedReadFile('poem-one/stanza-03.txt')
         .then(stanza3 => {
             blue(stanza3)
-            return promisifiedReadFile('poem-one/stanza-04.txt')
+            return promisifiedReadFile('poem-one/wrong-file-name.txt')
         })
         .then(stanza4 => blue(stanza4))
-        .catch(error => new Error(error))
+        .catch(error => magenta(new Error(error)))
 
 }
 
@@ -226,9 +226,9 @@ function problemF() {
     promisifiedReadFile('poem-one/stanza-03.txt')
         .then(stanza3 => {
             blue(stanza3)
-            return promisifiedReadFile('poem-one/stanza-04.txt')
+            return promisifiedReadFile('poem-one/wrong-file-name.txt')
         })
         .then(stanza4 => blue(stanza4))
-        .catch(error => new Error(error))
+        .catch(error => magenta(new Error(error)))
         .finally(() => console.log('done'))
 }
