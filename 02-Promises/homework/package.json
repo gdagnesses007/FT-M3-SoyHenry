@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "start": "nodemon ",
     "test": "jest *.spec.js",
     "grade": "jest --useStderr --json --outputFile=./result.json"
   },
