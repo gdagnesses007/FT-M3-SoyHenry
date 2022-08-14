@@ -3,7 +3,6 @@ var fs   = require('fs');
 
 http.createServer( function(req, res){ 
 	if( req.url === '/'){ //Si la URL es / devolvemos el HTML
-		console.log(req)
 		res.writeHead(200, { 'Content-Type':'text/html' })
 		var html = fs.readFileSync(__dirname +'/html/index.html');
 		res.end(html);
