@@ -31,6 +31,7 @@ $Promise.prototype._internalReject = function (data) {
         this._value = data
         this._state = REJECTED_STATE
     }
+    this._callHandlers()
 }
 
 $Promise.prototype.then = function (successCb, errorCb) {
@@ -42,11 +43,15 @@ $Promise.prototype.then = function (successCb, errorCb) {
     this._callHandler(handler)
 }
 
+$Promise.prototype.catch = function (errorCb) {
+    this.then(null, errorCb)
+}
+
 $Promise.prototype._callHandler = function (handler) {
     if (this._state === FULFILLED_STATE) {
-        handler.successCb(this._value)
+        handler.successCb && handler.successCb(this._value)
     } else if (this._state === REJECTED_STATE) {
-        handler.errorCb(this._value)
+        handler.errorCb && handler.errorCb(this._value)
     }
 }
 
@@ -54,6 +59,8 @@ $Promise.prototype._callHandlers = function () {
     this._handlerGroups.forEach(handler => {
         this._callHandler(handler)
     })
+    //try to clean handlers
+    //this._handlerGroups = []
 }
 
 module.exports = $Promise;
